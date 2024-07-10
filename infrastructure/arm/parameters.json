@@ -1,0 +1,57 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "sites_func_ext_srq_dev_name": {
+            "value": null
+        },
+        "vaults_kv_cjis_dev_name": {
+            "value": null
+        },
+        "sites_func_core_srq_dev_name": {
+            "value": null
+        },
+        "components_FuncAppInsight_name": {
+            "value": null
+        },
+        "namespaces_sbns_hub_dev_name": {
+            "value": null
+        },
+        "sites_func_mni_rules_engine_dev_name": {
+            "value": null
+        },
+        "serverfarms_ASP_rgcjishubdev_89d1_name": {
+            "value": null
+        },
+        "vaults_vault_lwtur9oo_name": {
+            "value": null
+        },
+        "storageAccounts_rgcjishubdev968e_name": {
+            "value": null
+        },
+        "storageAccounts_rgcjishubdev9e17_name": {
+            "value": null
+        },
+        "namespaces_sbns_cjis_connection_dev_name": {
+            "value": null
+        },
+        "privateEndpoints_pep_mni_rules_engine_name": {
+            "value": null
+        },
+        "virtualNetworks_vnet_cjis_services_dev_name": {
+            "value": null
+        },
+        "privateDnsZones_privatelink_azurewebsites_net_name": {
+            "value": null
+        },
+        "actionGroups_Application_Insights_Smart_Detection_name": {
+            "value": null
+        },
+        "userAssignedIdentities_id_cjishub_dev_admin_name": {
+            "value": null
+        },
+        "workspaces_DefaultWorkspace_fc0d686b_0d69_4abf_86dc_c7c08b5d5061_WUS2_externalid": {
+            "value": null
+        }
+    }
+}
