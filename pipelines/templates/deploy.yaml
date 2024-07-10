@@ -16,15 +16,15 @@ stages:
   - deployment: 'DeployIntegrationInfrastrucutre${{ parameters.environmentName }}'
     displayName: 'Deploy Integration Infrastrucutre'
     pool:
-      name: 'ubuntu-latest'
+      vmImage: 'ubuntu-latest'
     environment: '${{ parameters.environmentName }}'
     variables:
     - name: bicepArtifactName
       value: 'bicep-artifacts'
     - name: mainBicepPath
-      value: $(Pipeline.Workspace)/$(bicepArtifactName)/02-main.bicep
+      value: $(Pipeline.Workspace)/$(bicepArtifactName)/main.bicep
     - name: mainParametersPath
-      value: $(Pipeline.Workspace)/$(bicepArtifactName)/parameters/02-main.${{ parameters.environmentName }}.bicepparam
+      value: $(Pipeline.Workspace)/$(bicepArtifactName)/parameters/main.${{ parameters.environmentName }}.bicepparam
     strategy:
       runOnce:
         deploy:
@@ -44,5 +44,4 @@ stages:
               csmParametersFile: $(mainParametersPath)
               deploymentName: $(Build.BuildId)
               deploymentMode: 'Incremental'
-              overrideParameters: '-buildId $(Build.BuildId)'
               location: '$(region)'
