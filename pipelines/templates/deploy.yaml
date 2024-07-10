@@ -22,7 +22,7 @@ stages:
     - name: bicepArtifactName
       value: 'bicep-artifacts'
     - name: mainBicepPath
-      value: $(Pipeline.Workspace)/$(bicepArtifactName)/02-main.bicep
+      value: $(Pipeline.Workspace)/$(bicepArtifactName)/main.bicep
     - name: mainParametersPath
       value: $(Pipeline.Workspace)/$(bicepArtifactName)/parameters/02-main.${{ parameters.environmentName }}.bicepparam
     strategy:
