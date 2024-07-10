@@ -1,11 +1,23 @@
 import * as udt from '../userDefined/userDefinedTypes.bicep'
 
+@description('The name of the storage account to create')
 param storageAccountName string
+
+@description('The Azure region where the storage account will be deployed')
 param location string
+
+@description('The file shares to create')
 param fileShares udt.fileSharesConfiguration = []
+
+@description('The blob containers to create')
 param blobContainerNames string[] = []
+
+@description('The tables to create')
 param tableNames string[] = []
+
+@description('The name of the Key Vault secret to store the storage account connection string')
 param storageConnectionStringSecretName string
+
 @allowed([
   'Standard_LRS'
   'Standard_GRS'
@@ -13,9 +25,16 @@ param storageConnectionStringSecretName string
   'Standard_ZRS'
   'Premium_LRS'
 ])
+@description('The SKU of the storage account')
 param storageAccountSku string
+
+@description('The name of the Key Vault to store the storage account connection string')
 param keyVaultName string
+
+@description('The build ID, used to ensure unique deployment names')
 param buildId string
+
+@description('The tags to apply to the storage account')
 param tags object
 
 resource storage 'Microsoft.Storage/storageAccounts@2022-09-01' = {
