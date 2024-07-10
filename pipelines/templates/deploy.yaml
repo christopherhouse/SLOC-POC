@@ -18,7 +18,7 @@ stages:
   - deployment: 'DeployIntegrationInfrastrucutre${{ parameters.environmentName }}'
     displayName: 'Deploy Integration Infrastrucutre'
     pool:
-      name: ${{parameters.agentPoolName}}
+      name: 'ubuntu-latest'
     environment: '${{ parameters.devOpsEnvironmentName }}'
     variables:
     - name: bicepArtifactName
