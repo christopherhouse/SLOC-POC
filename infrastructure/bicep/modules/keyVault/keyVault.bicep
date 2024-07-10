@@ -10,6 +10,9 @@ param logAnalyticsWorkspaceResourceId string
 @description('The tags to apply to the Key Vault')
 param tags object = {}
 
+@description('Whether or not to enable purge protection')
+param enablePurgeProtection bool
+
 resource kv 'Microsoft.KeyVault/vaults@2023-07-01' = {
   name: keyVaultName
   location: location
@@ -22,16 +25,10 @@ resource kv 'Microsoft.KeyVault/vaults@2023-07-01' = {
     tenantId: subscription().tenantId
     softDeleteRetentionInDays: 90
     enableRbacAuthorization: true
-    publicNetworkAccess: 'Disabled'
-    networkAcls: {
-      bypass: 'AzureServices'
-      defaultAction: 'Deny'
-      ipRules: []
-      virtualNetworkRules: []
-    }
+    publicNetworkAccess: 'Enabled'
     enabledForTemplateDeployment: true
     enableSoftDelete: true
-    enablePurgeProtection: true
+    enablePurgeProtection: enablePurgeProtection ? true : null
   }
 }
 

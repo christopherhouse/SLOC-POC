@@ -13,6 +13,10 @@ param tags object
 @description('The retention period in days for Log Analytics data')
 param logAnalyticsRetentionInDays int
 
+@description('Whether to enable purge protection on the Key Vault')
+param enableKeyVaultPurgeProtection bool
+ 
+
 // Log Analytics Workspace
 var logAnalyticsWorkspaceName = '${workloadName}-${environmentSuffix}-laws'
 var logAnalyticsWorkspaceDeploymentName = '${logAnalyticsWorkspaceName}-${deployment().name}'
@@ -20,6 +24,10 @@ var logAnalyticsWorkspaceDeploymentName = '${logAnalyticsWorkspaceName}-${deploy
 // Key Vault
 var keyVaultName = '${workloadName}-${environmentSuffix}-kv'
 var keyVaultDeploymentName = '${keyVaultName}-${deployment().name}'
+
+// Application Insights
+var appInsightsName = '${workloadName}-${environmentSuffix}-ai'
+var appInsightsDeploymentName = '${appInsightsName}-${deployment().name}'
 
 module laws './modules/azureMonitor/logAnalyticsWorkspace.bicep' = {
   name: logAnalyticsWorkspaceDeploymentName
@@ -37,6 +45,19 @@ module keyVault './modules/keyVault/keyVault.bicep' = {
     location: location
     keyVaultName: keyVaultName
     logAnalyticsWorkspaceResourceId: laws.outputs.id
+    tags: tags
+    enablePurgeProtection: enableKeyVaultPurgeProtection
+  }
+}
+
+module appInsights './modules/azureMonitor/applicationInsights.bicep' = {
+  name: appInsightsDeploymentName
+  params: {
+    appInsightsName: appInsightsName
+    location: location
+    logAnalyticsWorkspaceId: laws.outputs.id
+    keyVaultName: keyVaultName
+    buildId: deployment().name
     tags: tags
   }
 }
