@@ -16,7 +16,7 @@ stages:
   - deployment: 'DeployIntegrationInfrastrucutre${{ parameters.environmentName }}'
     displayName: 'Deploy Integration Infrastrucutre'
     pool:
-      name: 'ubuntu-latest'
+      vmImage: 'ubuntu-latest'
     environment: '${{ parameters.environmentName }}'
     variables:
     - name: bicepArtifactName
