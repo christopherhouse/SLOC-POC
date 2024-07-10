@@ -7,6 +7,7 @@ param location string
 @description('The resource id of the log analytics workspace to send logs to')
 param logAnalyticsWorkspaceResourceId string
 
+@description('The tags to apply to the Key Vault')
 param tags object = {}
 
 resource kv 'Microsoft.KeyVault/vaults@2023-07-01' = {
