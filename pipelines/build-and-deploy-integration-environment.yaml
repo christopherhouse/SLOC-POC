@@ -1,0 +1,22 @@
+trigger:
+  branches:
+    include:
+    - 'main'
+
+stages:
+- stage: Build
+  displayName: 'Build and publish infrastructure artifacts'
+  jobs:
+  - template: templates/psrule.yaml
+    parameters:
+      psRuleModules: 'PSRule.Rules.Azure,PSRule.Rules.CAF'
+      psRuleBaseline: 'Azure.GA_2024_03'
+  - template: 'templates/build.yaml'
+
+- template: 'templates/deploy.yaml'
+  parameters:
+    devOpsEnvironmentName: 'Development Infrastructure'
+    environmentName: 'Development'
+    region: westus2
+    resourceGroupName: SLOC-POC
+    serviceConnectionName: 'CHHOUSE_FDPO'
