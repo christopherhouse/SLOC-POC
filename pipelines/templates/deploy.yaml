@@ -44,5 +44,4 @@ stages:
               csmParametersFile: $(mainParametersPath)
               deploymentName: $(Build.BuildId)
               deploymentMode: 'Incremental'
-              overrideParameters: '-buildId $(Build.BuildId)'
               location: '$(region)'
