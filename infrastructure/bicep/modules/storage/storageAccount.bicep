@@ -18,20 +18,6 @@ param keyVaultName string
 param buildId string
 param tags object
 
-/*
-fileShares should be an array of objects with the following structure:
-[
-  {
-    "shareName": "share1",
-    "quota": 1024
-  },
-  {
-    "shareName": "share2",
-    "quota": 2048
-  }
-]
-*/
-
 resource storage 'Microsoft.Storage/storageAccounts@2022-09-01' = {
   name: storageAccountName
   location: location
