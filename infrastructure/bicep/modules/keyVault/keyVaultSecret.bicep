@@ -1,7 +1,14 @@
+@description('The name of the secret to create')
 param secretName string
+
+@description('The name of the Key Vault to store the secret')
 param keyVaultName string
+
 @secure()
+@description('The value of the secret')
 param secretValue string
+
+@description('The tags to apply to the secret')
 param tags object = {}
 
 resource kv 'Microsoft.KeyVault/vaults@2023-02-01' existing = {
