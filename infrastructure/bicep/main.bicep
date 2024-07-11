@@ -33,6 +33,10 @@ param functionAppServicePlanInstanceCount int
 @description('The SKU of the App Service Plan for Function apps')
 param functionAppServicePlanSku udt.appServicePlanSkuType
 
+param coreSrqFunctionAppName string
+
+var baseName = '${workloadName}-${environmentSuffix}'
+
 // Log Analytics Workspace
 var logAnalyticsWorkspaceName = '${workloadName}-${environmentSuffix}-laws'
 var logAnalyticsWorkspaceDeploymentName = '${logAnalyticsWorkspaceName}-${deployment().name}'
@@ -61,8 +65,11 @@ var userAssignedManagedIdentityName = '${workloadName}-${environmentSuffix}-uami
 var userAssignedManagedIdentityDeploymentName = '${userAssignedManagedIdentityName}-${deployment().name}'
 var uamiKvSecretsUserDeploymentName = '${userAssignedManagedIdentityName}-kv-secrets-${deployment().name}'
 // Functions
-var appServicePlanName = '${workloadName}-${environmentSuffix}-asp'
+var appServicePlanName = '${baseName}-asp'
 var appServicePlanDeploymentName = '${appServicePlanName}-${deployment().name}'
+
+var coreSrqAppName = '${baseName}-${coreSrqFunctionAppName}-func'
+var coreSrqFunctionAppDeploymentName = '${baseName}-${coreSrqFunctionAppName}-${deployment().name}'
 
 module laws './modules/azureMonitor/logAnalyticsWorkspace.bicep' = {
   name: logAnalyticsWorkspaceDeploymentName
@@ -150,5 +157,19 @@ module asp './modules/appService/appServicePlan.bicep' = {
     sku: functionAppServicePlanSku
     instanceCount: functionAppServicePlanInstanceCount
     tags: tags
+  }
+}
+
+module coreSrq './modules/appService/functionApp.bicep' = {
+  name: coreSrqFunctionAppDeploymentName
+  params: {
+    location: location
+    tags: tags
+    appInsightsConnectionStringSecretUri: appInsights.outputs.connectionStringSecretUri
+    appInsightsResourceId: appInsights.outputs.id
+    appServicePlanResourceId: asp.outputs.id
+    functionName: coreSrqAppName
+    logAnalyticsWorkspaceResourceId: laws.outputs.id
+    userAssignedManagedIdentityResourceId: uami.outputs.id
   }
 }
