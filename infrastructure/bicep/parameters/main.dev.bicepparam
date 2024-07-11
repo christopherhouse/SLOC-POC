@@ -1,6 +1,6 @@
 using '../main.bicep'
 
-param workloadName = 'c-sloc-poc'
+param workloadName = 'ch-sloc-poc'
 param environmentSuffix = 'loc'
 param location = 'eastus2'
 param logAnalyticsRetentionInDays = 90

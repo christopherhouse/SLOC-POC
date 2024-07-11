@@ -19,6 +19,6 @@ stages:
   parameters:
     environmentName: 'dev'
     region: eastus2
-    resourceGroupName: SLOC-POC
+    resourceGroupName: SLOC-POC2
     serviceConnectionName: 'CHHOUSE_FDPO'
     dependencyName: 'Build'
