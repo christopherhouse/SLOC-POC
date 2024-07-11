@@ -13,3 +13,5 @@ param enableKeyVaultPurgeProtection = false
 param serviceBusSku = 'Standard'
 param hybridConnectionDestinationEndpoint = 'SQL:1433'
 param hybridConnectionName = 'sql'
+param functionAppServicePlanInstanceCount = 1
+param functionAppServicePlanSku = 'EP1'
