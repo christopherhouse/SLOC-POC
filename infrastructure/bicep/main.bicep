@@ -122,13 +122,13 @@ module hc './modules/relay/hybridConnection.bicep' = {
   }
 }
 
-// module asp './modules/appService/appServicePlan.bicep' = {
-//   name: appServicePlanDeploymentName
-//   params: {
-//     appServicePlanName: appServicePlanName
-//     location: location
-//     sku: functionAppServicePlanSku
-//     instanceCount: functionAppServicePlanInstanceCount
-//     tags: tags
-//   }
-// }
+module asp './modules/appService/appServicePlan.bicep' = {
+  name: appServicePlanDeploymentName
+  params: {
+    appServicePlanName: appServicePlanName
+    location: location
+    sku: functionAppServicePlanSku
+    instanceCount: functionAppServicePlanInstanceCount
+    tags: tags
+  }
+}
