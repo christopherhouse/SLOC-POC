@@ -81,7 +81,7 @@ resource func 'Microsoft.Web/sites@2023-12-01' = {
       keyVaultReferenceIdentity: userAssignedManagedIdentityResourceId
       appSettings: [
         {
-          name: 'AZUREWEBJOBS_STORAGE'
+          name: 'AzureWebJobsStorage'
           // The storage account connection string fom the stroage resource
           value: 'DefaultEndpointsProtocol=https;AccountName=${storageAccountName};AccountKey=${storage.listKeys().keys[0].value};EndpointSuffix=core.windows.net'
         }
