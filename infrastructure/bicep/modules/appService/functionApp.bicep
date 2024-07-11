@@ -97,11 +97,11 @@ resource func 'Microsoft.Web/sites@2023-12-01' = {
       appSettings: [
         {
           name: 'AzureWebJobsStorage'
-          value: 'DefaultEndpointsProtocol=https;AccountName=${storageAccountName};AccountKey=${storage.listKeys().keys[0].value};EndpointSuffix=core.windows.net'
+          value: udf.formatStorageConnectionString(storageAccountName, storage.listKeys().keys[0].value)
         }
         {
           name: 'WEBSITE_CONTENTAZUREFILECONNECTIONSTRING'
-          value: 'DefaultEndpointsProtocol=https;AccountName=${storageAccountName};AccountKey=${storage.listKeys().keys[0].value};EndpointSuffix=core.windows.net'
+          value: udf.formatStorageConnectionString(storageAccountName, storage.listKeys().keys[0].value)
         }
         {
           name: 'WEBSITE_CONTENTSHARE'

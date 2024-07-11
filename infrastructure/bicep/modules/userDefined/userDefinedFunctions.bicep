@@ -6,3 +6,6 @@ func formatAppServiceKeyVaultReference(secretUri string) string => '@Microsoft.K
 
 @export()
 func formatFullyQualifiedDomainName(hostName string, zoneName string) string => '${hostName}.${zoneName}'
+
+@export()
+func formatStorageConnectionString(storageAccountName string, storageAccountKey string) string => 'DefaultEndpointsProtocol=https;AccountName=${storageAccountName};AccountKey=${storageAccountKey};EndpointSuffix=core.windows.net'
