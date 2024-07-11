@@ -105,7 +105,7 @@ resource func 'Microsoft.Web/sites@2023-12-01' = {
         }
         {
           name: 'WEBSITE_CONTENTSHARE'
-          value: websiteConentShare
+          value: files.name
         }
         {
           name: 'APPLICATIONINSIGHTS_CONNECTION_STRING'
