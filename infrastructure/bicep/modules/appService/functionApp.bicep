@@ -71,6 +71,7 @@ resource func 'Microsoft.Web/sites@2023-12-01' = {
   }
   properties: {
     serverFarmId: appServicePlanResourceId
+    keyVaultReferenceIdentity: userAssignedManagedIdentityResourceId
     siteConfig: {
       numberOfWorkers: 1
       alwaysOn: true
