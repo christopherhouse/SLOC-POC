@@ -29,7 +29,7 @@ resource sbns 'Microsoft.ServiceBus/namespaces@2022-10-01-preview' = {
   properties: {
     minimumTlsVersion: '1.2'
     publicNetworkAccess: 'Disabled'
-    zoneRedundant: true
+    zoneRedundant: serviceBusNamespaceSku == 'Premium'
     disableLocalAuth: true
   }
 }
