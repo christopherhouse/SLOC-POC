@@ -103,10 +103,10 @@ resource func 'Microsoft.Web/sites@2023-12-01' = {
           name: 'WEBSITE_CONTENTAZUREFILECONNECTIONSTRING'
           value: 'DefaultEndpointsProtocol=https;AccountName=${storageAccountName};AccountKey=${storage.listKeys().keys[0].value};EndpointSuffix=core.windows.net'
         }
-        {
-          name: 'WEBSITE_CONTENTSHARE'
-          value: files.name
-        }
+        // {
+        //   name: 'WEBSITE_CONTENTSHARE'
+        //   value: files.name
+        // }
         {
           name: 'APPLICATIONINSIGHTS_CONNECTION_STRING'
           value: udf.formatAppServiceKeyVaultReference(appInsightsConnectionStringSecretUri)
