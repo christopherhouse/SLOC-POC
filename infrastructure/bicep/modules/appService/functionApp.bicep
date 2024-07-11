@@ -37,6 +37,8 @@ var mergedTags = union(tags, appInsightsTag)
 var storageBaseAccountName = toLower(replace(functionName, '-', ''))
 var storageAccountName = length(storageBaseAccountName) > 24 ? '${substring(storageBaseAccountName, 0, 22)}sa' : storageBaseAccountName
 
+var websiteConentShare = uniqueString(functionName, storageAccountName)
+
 resource storage 'Microsoft.Storage/storageAccounts@2022-09-01' = {
   name: storageAccountName
   location: location
@@ -82,8 +84,15 @@ resource func 'Microsoft.Web/sites@2023-12-01' = {
       appSettings: [
         {
           name: 'AzureWebJobsStorage'
-          // The storage account connection string fom the stroage resource
           value: 'DefaultEndpointsProtocol=https;AccountName=${storageAccountName};AccountKey=${storage.listKeys().keys[0].value};EndpointSuffix=core.windows.net'
+        }
+        {
+          name: 'WEBSITE_CONTENTAZUREFILECONNECTIONSTRING'
+          value: 'DefaultEndpointsProtocol=https;AccountName=${storageAccountName};AccountKey=${storage.listKeys().keys[0].value};EndpointSuffix=core.windows.net'
+        }
+        {
+          name: 'WEBSITE_CONTENTSHARE'
+          value: websiteConentShare
         }
         {
           name: 'APPLICATIONINSIGHTS_CONNECTION_STRING'
