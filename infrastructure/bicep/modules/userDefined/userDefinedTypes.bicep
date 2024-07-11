@@ -12,3 +12,7 @@ type filShareConfigurationType = {
 @export()
 @description('Array of file share configurations')
 type fileSharesConfiguration = filShareConfigurationType[]
+
+@export()
+@description('Supported service bus SKU types')
+type serviceBusSkuType = ('Basic' | 'Standard' | 'Premium')

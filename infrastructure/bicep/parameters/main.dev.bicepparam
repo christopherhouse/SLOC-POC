@@ -10,3 +10,4 @@ param tags = {
   costCenter: 'ABC-123-XYZ'
 }
 param enableKeyVaultPurgeProtection = false
+param serviceBusSku = 'Standard'

@@ -29,6 +29,10 @@ var keyVaultDeploymentName = '${keyVaultName}-${deployment().name}'
 var appInsightsName = '${workloadName}-${environmentSuffix}-ai'
 var appInsightsDeploymentName = '${appInsightsName}-${deployment().name}'
 
+// Service Bus Namespace
+var serviceBusNamespaceName = '${workloadName}-${environmentSuffix}-sbns'
+var serviceBusNamespaceDeploymentName = '${serviceBusNamespaceName}-${deployment().name}'
+
 module laws './modules/azureMonitor/logAnalyticsWorkspace.bicep' = {
   name: logAnalyticsWorkspaceDeploymentName
   params: {
