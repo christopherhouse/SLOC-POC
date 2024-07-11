@@ -14,10 +14,7 @@ parameters:
 stages:
 - stage: 'Deploy${{ parameters.environmentName }}'
   displayName: 'Deploy'
-  # Add set the dependsOnProperty to either nothing or the value of the dependencyName
-  # paramter if it's length is greater than 0
-  ${{ if gt(length(parameters.dependencyName), 0) }}:
-    dependsOn: ${{ parameters.dependencyName }}
+  dependsOn: ${{ parameters.dependencyName }}
   jobs:
   - deployment: 'DeployIntegrationInfrastrucutre${{ parameters.environmentName }}'
     displayName: 'Deploy Integration Infrastrucutre'
