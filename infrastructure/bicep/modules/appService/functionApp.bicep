@@ -1,0 +1,91 @@
+import * as udf from '../userDefined/userDefinedFunctions.bicep'
+
+@description('The name of the Function App')
+param functionName string
+
+@description('The Azure region where the Function App will be created')
+param location string
+
+@description('The tags to apply to the Function App')
+param tags object
+
+@description('The resource ID of the Log Analytics Workspace')
+param logAnalyticsWorkspaceResourceId string
+
+@description('The resource ID of the App Service Plan for the Function App')
+param appServicePlanResourceId string
+
+@description('The resource ID of the user-assigned managed identity')
+param userAssignedManagedIdentityResourceId string
+
+@description('The resource ID of the Application Insights resource')
+param appInsightsResourceId string
+
+@description('The URI of the Key Vault secret containing the Application Insights Instrumentation Key')
+param appInsightsConnectionStringSecretUri string
+
+var appInsightsTag = {
+  'hidden-related:/${appInsightsResourceId}': 'empty'
+}
+
+var mergedTags = union(tags, appInsightsTag)
+
+resource func 'Microsoft.Web/sites@2023-12-01' = {
+  name: functionName
+  location: location
+  tags: mergedTags
+  kind: 'functionapp'
+  identity: {
+    type: 'UserAssigned'
+    userAssignedIdentities: {
+      '${userAssignedManagedIdentityResourceId}': {}
+    }
+  }
+  properties: {
+    serverFarmId: appServicePlanResourceId
+    siteConfig: {
+      numberOfWorkers: 1
+      alwaysOn: true
+      http20Enabled: true
+      functionAppScaleLimit: 0
+      minimumElasticInstanceCount: 1
+      keyVaultReferenceIdentity: userAssignedManagedIdentityResourceId
+      appSettings: [
+        {
+          name: 'APPLICATIONINSIGHTS_CONNECTION_STRING'
+          value: udf.formatAppServiceKeyVaultReference(appInsightsConnectionStringSecretUri)
+        }
+        {
+          name: 'FUNCTIONS_WORKER_RUNTIME'
+          value: 'dotnet'
+        }
+        {
+          name: 'FUNCTIONS_EXTENSION_VERSION'
+          value: '~4'
+        }
+        {
+          name: 'WEBSITE_RUN_FROM_PACKAGE'
+          value: '1'
+        }
+        {
+          name: 'WEBSITE_NODE_DEFAULT_VERSION'
+          value: '~20'
+        }
+      ]
+    }
+  }
+}
+
+resource diags 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = {
+  name: 'laws'
+  scope: func
+  properties: {
+    logs: [
+      {
+        categoryGroup: 'allLogs'
+        enabled: true
+      }
+    ]
+    workspaceId: logAnalyticsWorkspaceResourceId
+  }
+}
