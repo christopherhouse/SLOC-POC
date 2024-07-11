@@ -42,11 +42,6 @@ resource storage 'Microsoft.Storage/storageAccounts@2022-09-01' = {
     accessTier: 'Hot'
     supportsHttpsTrafficOnly: true
     minimumTlsVersion: 'TLS1_2'
-    allowBlobPublicAccess: false
-    networkAcls: {
-      bypass: 'AzureServices'
-      defaultAction: 'Deny'
-    }
     publicNetworkAccess: 'Enabled'
   }
 }
