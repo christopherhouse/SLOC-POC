@@ -1,4 +1,5 @@
 import * as udf from '../userDefined/userDefinedFunctions.bicep'
+import * as udt from '../userDefined/userDefinedTypes.bicep'
 
 @description('The name of the Function App')
 param functionName string
@@ -24,11 +25,38 @@ param appInsightsResourceId string
 @description('The URI of the Key Vault secret containing the Application Insights Instrumentation Key')
 param appInsightsConnectionStringSecretUri string
 
+@description('The storage account type for the Function App')
+param functionStorageAccountType udt.storageAccountType
+
 var appInsightsTag = {
   'hidden-related:/${appInsightsResourceId}': 'empty'
 }
 
 var mergedTags = union(tags, appInsightsTag)
+
+var storageBaseAccountName = toLower(replace(functionName, '-', ''))
+var storageAccountName = length(storageBaseAccountName) > 24 ? '${substring(storageBaseAccountName, 0, 22)}sa' : storageBaseAccountName
+
+resource storage 'Microsoft.Storage/storageAccounts@2022-09-01' = {
+  name: storageAccountName
+  location: location
+  tags: tags
+  kind: 'StorageV2'
+  sku: {
+    name: functionStorageAccountType
+  }
+  properties: {
+    accessTier: 'Hot'
+    supportsHttpsTrafficOnly: true
+    minimumTlsVersion: 'TLS1_2'
+    allowBlobPublicAccess: false
+    networkAcls: {
+      bypass: 'AzureServices'
+      defaultAction: 'Deny'
+    }
+    publicNetworkAccess: 'Enabled'
+  }
+}
 
 resource func 'Microsoft.Web/sites@2023-12-01' = {
   name: functionName
@@ -51,6 +79,11 @@ resource func 'Microsoft.Web/sites@2023-12-01' = {
       minimumElasticInstanceCount: 1
       keyVaultReferenceIdentity: userAssignedManagedIdentityResourceId
       appSettings: [
+        {
+          name: 'AZUREWEBJOBS_STORAGE'
+          // The storage account connection string fom the stroage resource
+          value: 'DefaultEndpointsProtocol=https;AccountName=${storageAccountName};AccountKey=${storage.listKeys().keys[0].value};EndpointSuffix=core.windows.net'
+        }
         {
           name: 'APPLICATIONINSIGHTS_CONNECTION_STRING'
           value: udf.formatAppServiceKeyVaultReference(appInsightsConnectionStringSecretUri)

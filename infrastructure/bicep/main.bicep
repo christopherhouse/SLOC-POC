@@ -33,6 +33,9 @@ param functionAppServicePlanInstanceCount int
 @description('The SKU of the App Service Plan for Function apps')
 param functionAppServicePlanSku udt.appServicePlanSkuType
 
+@description('The storage account type for the Function Apps')
+param functionAppStorageType udt.storageAccountType
+
 param coreSrqFunctionAppName string
 
 param extSrqFunctionAppName string
@@ -181,6 +184,7 @@ module coreSrq './modules/appService/functionApp.bicep' = {
     functionName: coreSrqAppName
     logAnalyticsWorkspaceResourceId: laws.outputs.id
     userAssignedManagedIdentityResourceId: uami.outputs.id
+    functionStorageAccountType: functionAppStorageType
   }
   dependsOn: [
     kvRbac
@@ -198,6 +202,7 @@ module extSrq './modules/appService/functionApp.bicep' = {
     functionName: extSrqAppName
     logAnalyticsWorkspaceResourceId: laws.outputs.id
     userAssignedManagedIdentityResourceId: uami.outputs.id 
+    functionStorageAccountType: functionAppStorageType
   }
 }
 
@@ -212,5 +217,6 @@ module bre './modules/appService/functionApp.bicep' = {
     functionName: breAppName
     logAnalyticsWorkspaceResourceId: laws.outputs.id
     userAssignedManagedIdentityResourceId: uami.outputs.id 
+    functionStorageAccountType: functionAppStorageType
   }
 }

@@ -18,15 +18,8 @@ param tableNames string[] = []
 @description('The name of the Key Vault secret to store the storage account connection string')
 param storageConnectionStringSecretName string
 
-@allowed([
-  'Standard_LRS'
-  'Standard_GRS'
-  'Standard_RAGRS'
-  'Standard_ZRS'
-  'Premium_LRS'
-])
 @description('The SKU of the storage account')
-param storageAccountSku string
+param storageAccountSku udt.storageAccountType
 
 @description('The name of the Key Vault to store the storage account connection string')
 param keyVaultName string
