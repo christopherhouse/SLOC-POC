@@ -65,7 +65,7 @@ resource files 'Microsoft.Storage/storageAccounts/fileServices@2023-05-01' = {
   parent: storage
 }
 
-resource fileShares 'Microsoft.Storage/storageAccounts/fileServices/shares@2023-05-01' = {
+resource fileShare 'Microsoft.Storage/storageAccounts/fileServices/shares@2023-05-01' = {
   name: websiteConentShare
   parent: files
   properties: {
@@ -103,10 +103,10 @@ resource func 'Microsoft.Web/sites@2023-12-01' = {
           name: 'WEBSITE_CONTENTAZUREFILECONNECTIONSTRING'
           value: 'DefaultEndpointsProtocol=https;AccountName=${storageAccountName};AccountKey=${storage.listKeys().keys[0].value};EndpointSuffix=core.windows.net'
         }
-        // {
-        //   name: 'WEBSITE_CONTENTSHARE'
-        //   value: files.name
-        // }
+        {
+          name: 'WEBSITE_CONTENTSHARE'
+          value: fileShare.name
+        }
         {
           name: 'APPLICATIONINSIGHTS_CONNECTION_STRING'
           value: udf.formatAppServiceKeyVaultReference(appInsightsConnectionStringSecretUri)
