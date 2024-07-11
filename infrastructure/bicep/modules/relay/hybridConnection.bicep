@@ -16,3 +16,13 @@ resource hc 'Microsoft.Relay/namespaces/hybridConnections@2021-11-01' = {
     userMetadata: '[{"key": "endpoint", "value": "${hybridConnectionDestinationEndpoint}"}]'
   }
 }
+
+resource authRule 'Microsoft.Relay/namespaces/hybridConnections/authorizationRules@2021-11-01' = {
+  parent: hc
+  name: 'defaultListener'
+  properties: {
+    rights: [
+      'Listen'
+    ]
+  }
+}
