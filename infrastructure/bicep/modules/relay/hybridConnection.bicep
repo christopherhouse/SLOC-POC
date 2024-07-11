@@ -17,12 +17,22 @@ resource hc 'Microsoft.Relay/namespaces/hybridConnections@2021-11-01' = {
   }
 }
 
-resource authRule 'Microsoft.Relay/namespaces/hybridConnections/authorizationRules@2021-11-01' = {
+resource listenRule 'Microsoft.Relay/namespaces/hybridConnections/authorizationRules@2021-11-01' = {
   parent: hc
   name: 'defaultListener'
   properties: {
     rights: [
       'Listen'
+    ]
+  }
+}
+
+resource sendRule 'Microsoft.Relay/namespaces/hybridConnections/authorizationRules@2021-11-01' = {
+  parent: hc
+  name: 'defaultSender'
+  properties: {
+    rights: [
+      'Send'
     ]
   }
 }
