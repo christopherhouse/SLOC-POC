@@ -86,14 +86,14 @@ resource func 'Microsoft.Web/sites@2023-12-01' = {
           name: 'AzureWebJobsStorage'
           value: udf.formatStorageConnectionString(storageAccountName, storage.listKeys().keys[0].value)
         }
-        // {
-        //   name: 'WEBSITE_CONTENTAZUREFILECONNECTIONSTRING'
-        //   value: udf.formatStorageConnectionString(storageAccountName, storage.listKeys().keys[0].value)
-        // }
-        // {
-        //   name: 'WEBSITE_CONTENTSHARE'
-        //   value: websiteConentShare
-        // }
+        {
+          name: 'WEBSITE_CONTENTAZUREFILECONNECTIONSTRING'
+          value: udf.formatStorageConnectionString(storageAccountName, storage.listKeys().keys[0].value)
+        }
+        {
+          name: 'WEBSITE_CONTENTSHARE'
+          value: websiteConentShare
+        }
         {
           name: 'foobar'
           value: websiteConentShare
