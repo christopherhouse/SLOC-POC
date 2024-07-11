@@ -16,3 +16,4 @@ param hybridConnectionName = 'sql'
 param functionAppServicePlanInstanceCount = 1
 param functionAppServicePlanSku = 'EP1'
 param coreSrqFunctionAppName = 'core-srq'
+param extSrqFunctionAppName = 'ext-srq'

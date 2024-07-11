@@ -35,6 +35,10 @@ param functionAppServicePlanSku udt.appServicePlanSkuType
 
 param coreSrqFunctionAppName string
 
+param extSrqFunctionAppName string
+
+param businessRulesEngineFunctionName string
+
 var baseName = '${workloadName}-${environmentSuffix}'
 
 // Log Analytics Workspace
@@ -69,7 +73,13 @@ var appServicePlanName = '${baseName}-asp'
 var appServicePlanDeploymentName = '${appServicePlanName}-${deployment().name}'
 
 var coreSrqAppName = '${baseName}-${coreSrqFunctionAppName}-func'
-var coreSrqFunctionAppDeploymentName = '${baseName}-${coreSrqFunctionAppName}-${deployment().name}'
+var coreSrqFunctionAppDeploymentName = '${coreSrqAppName}-${deployment().name}'
+
+var extSrqAppName = '${baseName}-${extSrqFunctionAppName}-func'
+var extSrqFunctionAppDeploymentName = '${extSrqAppName}-${deployment().name}'
+
+var breAppName = '${baseName}-${businessRulesEngineFunctionName}-func'
+var breFunctionAppDeploymentName = '${breAppName}-${deployment().name}'
 
 module laws './modules/azureMonitor/logAnalyticsWorkspace.bicep' = {
   name: logAnalyticsWorkspaceDeploymentName
@@ -171,5 +181,36 @@ module coreSrq './modules/appService/functionApp.bicep' = {
     functionName: coreSrqAppName
     logAnalyticsWorkspaceResourceId: laws.outputs.id
     userAssignedManagedIdentityResourceId: uami.outputs.id
+  }
+  dependsOn: [
+    kvRbac
+  ]
+}
+
+module extSrq './modules/appService/functionApp.bicep' = {
+  name: extSrqFunctionAppDeploymentName
+  params: {
+    location: location
+    tags: tags
+    appInsightsConnectionStringSecretUri: appInsights.outputs.connectionStringSecretUri
+    appInsightsResourceId: appInsights.outputs.id
+    appServicePlanResourceId: asp.outputs.id
+    functionName: extSrqAppName
+    logAnalyticsWorkspaceResourceId: laws.outputs.id
+    userAssignedManagedIdentityResourceId: uami.outputs.id 
+  }
+}
+
+module bre './modules/appService/functionApp.bicep' = {
+  name: breFunctionAppDeploymentName
+  params: {
+    location: location
+    tags: tags
+    appInsightsConnectionStringSecretUri: appInsights.outputs.connectionStringSecretUri
+    appInsightsResourceId: appInsights.outputs.id
+    appServicePlanResourceId: asp.outputs.id
+    functionName: breAppName
+    logAnalyticsWorkspaceResourceId: laws.outputs.id
+    userAssignedManagedIdentityResourceId: uami.outputs.id 
   }
 }
