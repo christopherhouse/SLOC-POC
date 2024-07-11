@@ -60,6 +60,19 @@ resource storage 'Microsoft.Storage/storageAccounts@2022-09-01' = {
   }
 }
 
+resource files 'Microsoft.Storage/storageAccounts/fileServices@2023-05-01' = {
+  name: 'default'
+  parent: storage
+}
+
+resource fileShares 'Microsoft.Storage/storageAccounts/fileServices/shares@2023-05-01' = {
+  name: websiteConentShare
+  parent: files
+  properties: {
+    shareQuota: 1024
+  }
+}
+
 resource func 'Microsoft.Web/sites@2023-12-01' = {
   name: functionName
   location: location
