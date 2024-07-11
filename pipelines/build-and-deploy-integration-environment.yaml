@@ -12,6 +12,7 @@ stages:
       psRuleModules: 'PSRule.Rules.Azure,PSRule.Rules.CAF'
       psRuleBaseline: 'Azure.GA_2024_03'
   - template: 'templates/build.yaml'
+    dependsOn: PSRule
 
 - template: 'templates/deploy.yaml'
   parameters:
