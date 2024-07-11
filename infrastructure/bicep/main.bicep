@@ -56,6 +56,10 @@ var relayNamespaceDeploymentName = '${relayNamespaceName}-${deployment().name}'
 var hyConnectionName = '${workloadName}-${environmentSuffix}-${hybridConnectionName}-hc'
 var hyConnectionDeploymentName = '${hyConnectionName}-${deployment().name}'
 
+// User-assigned managed identity
+var userAssignedManagedIdentityName = '${workloadName}-${environmentSuffix}-uami'
+var userAssignedManagedIdentityDeploymentName = '${userAssignedManagedIdentityName}-${deployment().name}'
+var uamiKvSecretsUserDeploymentName = '${userAssignedManagedIdentityName}-kv-secrets-${deployment().name}'
 // Functions
 var appServicePlanName = '${workloadName}-${environmentSuffix}-asp'
 var appServicePlanDeploymentName = '${appServicePlanName}-${deployment().name}'
@@ -119,6 +123,22 @@ module hc './modules/relay/hybridConnection.bicep' = {
     hybridConnectionDestinationEndpoint: hybridConnectionDestinationEndpoint
     hybridConnectionName: hyConnectionName
     relayNamespaceName: rns.outputs.name
+  }
+}
+
+module uami './modules/managedIdentity/userAssignedManagedIdentity.bicep' = {
+  name: userAssignedManagedIdentityDeploymentName
+  params: {
+    location: location
+    managedIdentityName: userAssignedManagedIdentityName
+  }
+}
+
+module kvRbac './modules/keyVault/keyVaultSecretReader.bicep' = {
+  name: uamiKvSecretsUserDeploymentName
+  params: {
+    keyVaultName: keyVaultName
+    principalId: uami.outputs.principalId
   }
 }
 
