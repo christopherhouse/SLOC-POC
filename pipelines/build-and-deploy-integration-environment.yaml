@@ -21,3 +21,4 @@ stages:
     region: eastus2
     resourceGroupName: SLOC-POC
     serviceConnectionName: 'CHHOUSE_FDPO'
+    dependencyName: 'Build'
