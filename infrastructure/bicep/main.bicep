@@ -21,6 +21,12 @@ param enableKeyVaultPurgeProtection bool
 @description('The SKU of the Service Bus namespace')
 param serviceBusSku udt.serviceBusSkuType
 
+@description('The name that will be concatenated with workloadName and environmentSuffix to create the hybrid connection name.')
+param hybridConnectionName string
+
+@description('The endpoint (hostname:port #) of the hybrid connection destination.')
+param hybridConnectionDestinationEndpoint string
+
 // Log Analytics Workspace
 var logAnalyticsWorkspaceName = '${workloadName}-${environmentSuffix}-laws'
 var logAnalyticsWorkspaceDeploymentName = '${logAnalyticsWorkspaceName}-${deployment().name}'
@@ -40,6 +46,9 @@ var serviceBusNamespaceDeploymentName = '${serviceBusNamespaceName}-${deployment
 // Relay Namespace
 var relayNamespaceName = '${workloadName}-${environmentSuffix}-rns'
 var relayNamespaceDeploymentName = '${relayNamespaceName}-${deployment().name}'
+
+var hyConnectionName = '${workloadName}-${environmentSuffix}-${hybridConnectionName}-hc'
+var hyConnectionDeploymentName = '${hyConnectionName}-${deployment().name}'
 
 module laws './modules/azureMonitor/logAnalyticsWorkspace.bicep' = {
   name: logAnalyticsWorkspaceDeploymentName
@@ -85,10 +94,20 @@ module sbns './modules/serviceBus/serviceBusNamespace.bicep' = {
   }
 }
 
-module rns './modules/serviceBus/relayNamespace.bicep' = {
+module rns './modules/relay/relayNamespace.bicep' = {
   name: relayNamespaceDeploymentName
   params: {
     location: location
     relayNamespaceName: relayNamespaceName
+    logAnalyticsWorkspaceResourceId: laws.outputs.id
+  }
+}
+
+module hc './modules/relay/hybridConnection.bicep' = {
+  name: hyConnectionDeploymentName
+  params: {
+    hybridConnectionDestinationEndpoint: hybridConnectionDestinationEndpoint
+    hybridConnectionName: hyConnectionName
+    relayNamespaceName: rns.outputs.name
   }
 }
