@@ -47,7 +47,7 @@ resource storage 'Microsoft.Storage/storageAccounts@2022-09-01' = {
       bypass: 'AzureServices'
       defaultAction: 'Deny'
     }
-    publicNetworkAccess: 'Disabled'
+    publicNetworkAccess: 'Enabled'
   }
 }
 

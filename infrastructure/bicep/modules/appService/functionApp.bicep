@@ -37,7 +37,7 @@ var mergedTags = union(tags, appInsightsTag)
 var storageBaseAccountName = toLower(replace(functionName, '-', ''))
 var storageAccountName = length(storageBaseAccountName) > 24 ? '${substring(storageBaseAccountName, 0, 22)}sa' : storageBaseAccountName
 
-var websiteConentShare = 'foobar' //toLower(uniqueString(functionName, storageAccountName))
+var websiteConentShare = toLower(uniqueString(functionName, storageAccountName))
 
 resource storage 'Microsoft.Storage/storageAccounts@2022-09-01' = {
   name: storageAccountName
