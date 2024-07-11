@@ -1,3 +1,5 @@
+import * as udt from './modules/userDefined/userDefinedTypes.bicep'
+
 @description('The name of the workload being deployed, combined with the environment suffix and resource type abbreviation to create the resource name.')
 param workloadName string
 
@@ -15,7 +17,15 @@ param logAnalyticsRetentionInDays int
 
 @description('Whether to enable purge protection on the Key Vault')
 param enableKeyVaultPurgeProtection bool
- 
+
+@description('The SKU of the Service Bus namespace')
+param serviceBusSku udt.serviceBusSkuType
+
+@description('The name that will be concatenated with workloadName and environmentSuffix to create the hybrid connection name.')
+param hybridConnectionName string
+
+@description('The endpoint (hostname:port #) of the hybrid connection destination.')
+param hybridConnectionDestinationEndpoint string
 
 // Log Analytics Workspace
 var logAnalyticsWorkspaceName = '${workloadName}-${environmentSuffix}-laws'
@@ -28,6 +38,17 @@ var keyVaultDeploymentName = '${keyVaultName}-${deployment().name}'
 // Application Insights
 var appInsightsName = '${workloadName}-${environmentSuffix}-ai'
 var appInsightsDeploymentName = '${appInsightsName}-${deployment().name}'
+
+// Service Bus Namespace
+var serviceBusNamespaceName = '${workloadName}-${environmentSuffix}-sbns'
+var serviceBusNamespaceDeploymentName = '${serviceBusNamespaceName}-${deployment().name}'
+
+// Relay Namespace
+var relayNamespaceName = '${workloadName}-${environmentSuffix}-rns'
+var relayNamespaceDeploymentName = '${relayNamespaceName}-${deployment().name}'
+
+var hyConnectionName = '${workloadName}-${environmentSuffix}-${hybridConnectionName}-hc'
+var hyConnectionDeploymentName = '${hyConnectionName}-${deployment().name}'
 
 module laws './modules/azureMonitor/logAnalyticsWorkspace.bicep' = {
   name: logAnalyticsWorkspaceDeploymentName
@@ -59,5 +80,34 @@ module appInsights './modules/azureMonitor/applicationInsights.bicep' = {
     keyVaultName: keyVaultName
     buildId: deployment().name
     tags: tags
+  }
+}
+
+module sbns './modules/serviceBus/serviceBusNamespace.bicep' = {
+  name: serviceBusNamespaceDeploymentName
+  params: {
+    serviceBusNamespaceName: serviceBusNamespaceName
+    location: location
+    serviceBusNamespaceSku: serviceBusSku
+    logAnalyticsWorkspaceResourceId: laws.outputs.id
+    tags: tags
+  }
+}
+
+module rns './modules/relay/relayNamespace.bicep' = {
+  name: relayNamespaceDeploymentName
+  params: {
+    location: location
+    relayNamespaceName: relayNamespaceName
+    logAnalyticsWorkspaceResourceId: laws.outputs.id
+  }
+}
+
+module hc './modules/relay/hybridConnection.bicep' = {
+  name: hyConnectionDeploymentName
+  params: {
+    hybridConnectionDestinationEndpoint: hybridConnectionDestinationEndpoint
+    hybridConnectionName: hyConnectionName
+    relayNamespaceName: rns.outputs.name
   }
 }

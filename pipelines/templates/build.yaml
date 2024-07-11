@@ -1,6 +1,11 @@
+parameters:
+- name: dependencyName
+  type: string
+
 jobs:
 - job: Build
   displayName: 'Build and publish infrastructure artifacts'
+  dependsOn: ${{ parameters.dependencyName }}
   pool:
     vmImage: 'ubuntu-latest'
   variables:
