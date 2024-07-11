@@ -37,6 +37,10 @@ var appInsightsDeploymentName = '${appInsightsName}-${deployment().name}'
 var serviceBusNamespaceName = '${workloadName}-${environmentSuffix}-sbns'
 var serviceBusNamespaceDeploymentName = '${serviceBusNamespaceName}-${deployment().name}'
 
+// Relay Namespace
+var relayNamespaceName = '${workloadName}-${environmentSuffix}-rns'
+var relayNamespaceDeploymentName = '${relayNamespaceName}-${deployment().name}'
+
 module laws './modules/azureMonitor/logAnalyticsWorkspace.bicep' = {
   name: logAnalyticsWorkspaceDeploymentName
   params: {
@@ -78,5 +82,13 @@ module sbns './modules/serviceBus/serviceBusNamespace.bicep' = {
     serviceBusNamespaceSku: serviceBusSku
     logAnalyticsWorkspaceResourceId: laws.outputs.id
     tags: tags
+  }
+}
+
+module rns './modules/serviceBus/relayNamespace.bicep' = {
+  name: relayNamespaceDeploymentName
+  params: {
+    location: location
+    relayNamespaceName: relayNamespaceName
   }
 }
