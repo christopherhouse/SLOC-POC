@@ -27,6 +27,12 @@ param hybridConnectionName string
 @description('The endpoint (hostname:port #) of the hybrid connection destination.')
 param hybridConnectionDestinationEndpoint string
 
+@description('The number of instances to create for the App Service Plan for Function apps')
+param functionAppServicePlanInstanceCount int
+
+@description('The SKU of the App Service Plan for Function apps')
+param functionAppServicePlanSku udt.appServicePlanSkuType
+
 // Log Analytics Workspace
 var logAnalyticsWorkspaceName = '${workloadName}-${environmentSuffix}-laws'
 var logAnalyticsWorkspaceDeploymentName = '${logAnalyticsWorkspaceName}-${deployment().name}'
@@ -49,6 +55,10 @@ var relayNamespaceDeploymentName = '${relayNamespaceName}-${deployment().name}'
 
 var hyConnectionName = '${workloadName}-${environmentSuffix}-${hybridConnectionName}-hc'
 var hyConnectionDeploymentName = '${hyConnectionName}-${deployment().name}'
+
+// Functions
+var appServicePlanName = '${workloadName}-${environmentSuffix}-asp'
+var appServicePlanDeploymentName = '${appServicePlanName}-${deployment().name}'
 
 module laws './modules/azureMonitor/logAnalyticsWorkspace.bicep' = {
   name: logAnalyticsWorkspaceDeploymentName
@@ -109,5 +119,16 @@ module hc './modules/relay/hybridConnection.bicep' = {
     hybridConnectionDestinationEndpoint: hybridConnectionDestinationEndpoint
     hybridConnectionName: hyConnectionName
     relayNamespaceName: rns.outputs.name
+  }
+}
+
+module asp './modules/appService/appServicePlan.bicep' = {
+  name: appServicePlanDeploymentName
+  params: {
+    appServicePlanName: appServicePlanName
+    location: location
+    sku: functionAppServicePlanSku
+    instanceCount: functionAppServicePlanInstanceCount
+    tags: tags
   }
 }

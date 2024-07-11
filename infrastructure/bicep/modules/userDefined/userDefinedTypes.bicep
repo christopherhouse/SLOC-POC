@@ -16,3 +16,7 @@ type fileSharesConfiguration = filShareConfigurationType[]
 @export()
 @description('Supported service bus SKU types')
 type serviceBusSkuType = ('Basic' | 'Standard' | 'Premium')
+
+@export()
+@description('Supported app service plan SKU types')
+type appServicePlanSkuType = ('EP1' | 'EP2' | 'EP3' | 'Y1')
