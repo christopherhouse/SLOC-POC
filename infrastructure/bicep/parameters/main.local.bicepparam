@@ -2,7 +2,7 @@ using '../main.bicep'
 
 param workloadName = 'c-sloc-poc'
 param environmentSuffix = 'loc'
-param location = 'westus2'
+param location = 'eastus2'
 param logAnalyticsRetentionInDays = 90
 param tags = {
   workload: workloadName
