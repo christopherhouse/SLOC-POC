@@ -29,6 +29,7 @@ resource asp 'Microsoft.Web/serverfarms@2023-12-01' = {
   tags: tags
   sku: {
     size: sku
+    name: sku
     capacity: sku != 'Y1' ? instanceCount : null
     tier: sku == 'Y1' ? 'Dynamic' : 'ElasticPremium'
   }
