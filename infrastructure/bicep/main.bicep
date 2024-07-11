@@ -1,3 +1,5 @@
+import * as udt from './modules/userDefined/userDefinedTypes.bicep'
+
 @description('The name of the workload being deployed, combined with the environment suffix and resource type abbreviation to create the resource name.')
 param workloadName string
 
@@ -15,7 +17,9 @@ param logAnalyticsRetentionInDays int
 
 @description('Whether to enable purge protection on the Key Vault')
 param enableKeyVaultPurgeProtection bool
- 
+
+@description('The SKU of the Service Bus namespace')
+param serviceBusSku udt.serviceBusSkuType
 
 // Log Analytics Workspace
 var logAnalyticsWorkspaceName = '${workloadName}-${environmentSuffix}-laws'
@@ -62,6 +66,17 @@ module appInsights './modules/azureMonitor/applicationInsights.bicep' = {
     logAnalyticsWorkspaceId: laws.outputs.id
     keyVaultName: keyVaultName
     buildId: deployment().name
+    tags: tags
+  }
+}
+
+module sbns './modules/serviceBus/serviceBusNamespace.bicep' = {
+  name: serviceBusNamespaceDeploymentName
+  params: {
+    serviceBusNamespaceName: serviceBusNamespaceName
+    location: location
+    serviceBusNamespaceSku: serviceBusSku
+    logAnalyticsWorkspaceResourceId: laws.outputs.id
     tags: tags
   }
 }
