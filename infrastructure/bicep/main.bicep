@@ -36,39 +36,42 @@ param functionAppServicePlanSku udt.appServicePlanSkuType
 @description('The storage account type for the Function Apps')
 param functionAppStorageType udt.storageAccountType
 
+@description('The name of the core SRQ Function App')
 param coreSrqFunctionAppName string
 
+@description('The name of the external SRQ Function App')
 param extSrqFunctionAppName string
 
+@description('The name of the Business Rules Engine Function App')
 param businessRulesEngineFunctionName string
 
 var baseName = '${workloadName}-${environmentSuffix}'
 
 // Log Analytics Workspace
-var logAnalyticsWorkspaceName = '${workloadName}-${environmentSuffix}-laws'
+var logAnalyticsWorkspaceName = '${baseName}-laws'
 var logAnalyticsWorkspaceDeploymentName = '${logAnalyticsWorkspaceName}-${deployment().name}'
 
 // Key Vault
-var keyVaultName = '${workloadName}-${environmentSuffix}-kv'
+var keyVaultName = '${baseName}-kv'
 var keyVaultDeploymentName = '${keyVaultName}-${deployment().name}'
 
 // Application Insights
-var appInsightsName = '${workloadName}-${environmentSuffix}-ai'
+var appInsightsName = '${baseName}-ai'
 var appInsightsDeploymentName = '${appInsightsName}-${deployment().name}'
 
 // Service Bus Namespace
-var serviceBusNamespaceName = '${workloadName}-${environmentSuffix}-sbns'
+var serviceBusNamespaceName = '${baseName}-sbns'
 var serviceBusNamespaceDeploymentName = '${serviceBusNamespaceName}-${deployment().name}'
 
 // Relay Namespace
-var relayNamespaceName = '${workloadName}-${environmentSuffix}-rns'
+var relayNamespaceName = '${baseName}-rns'
 var relayNamespaceDeploymentName = '${relayNamespaceName}-${deployment().name}'
 
-var hyConnectionName = '${workloadName}-${environmentSuffix}-${hybridConnectionName}-hc'
+var hyConnectionName = '${baseName}-${hybridConnectionName}-hc'
 var hyConnectionDeploymentName = '${hyConnectionName}-${deployment().name}'
 
 // User-assigned managed identity
-var userAssignedManagedIdentityName = '${workloadName}-${environmentSuffix}-uami'
+var userAssignedManagedIdentityName = '${baseName}-uami'
 var userAssignedManagedIdentityDeploymentName = '${userAssignedManagedIdentityName}-${deployment().name}'
 var uamiKvSecretsUserDeploymentName = '${userAssignedManagedIdentityName}-kv-secrets-${deployment().name}'
 // Functions
@@ -77,12 +80,6 @@ var appServicePlanDeploymentName = '${appServicePlanName}-${deployment().name}'
 
 var coreSrqAppName = '${baseName}-${coreSrqFunctionAppName}-func'
 var coreSrqFunctionAppDeploymentName = '${coreSrqAppName}-${deployment().name}'
-
-var extSrqAppName = '${baseName}-${extSrqFunctionAppName}-func'
-var extSrqFunctionAppDeploymentName = '${extSrqAppName}-${deployment().name}'
-
-var breAppName = '${baseName}-${businessRulesEngineFunctionName}-func'
-var breFunctionAppDeploymentName = '${breAppName}-${deployment().name}'
 
 module laws './modules/azureMonitor/logAnalyticsWorkspace.bicep' = {
   name: logAnalyticsWorkspaceDeploymentName
@@ -187,36 +184,27 @@ module coreSrq './modules/appService/functionApp.bicep' = {
     functionStorageAccountType: functionAppStorageType
   }
   dependsOn: [
-    kvRbac
+    kvRbac  // Manual dependency because the Function needs Secrets User access to KV before it can deploy due to the App Insights secret being stored in KV
   ]
 }
 
-module extSrq './modules/appService/functionApp.bicep' = {
-  name: extSrqFunctionAppDeploymentName
-  params: {
-    location: location
-    tags: tags
-    appInsightsConnectionStringSecretUri: appInsights.outputs.connectionStringSecretUri
-    appInsightsResourceId: appInsights.outputs.id
-    appServicePlanResourceId: asp.outputs.id
-    functionName: extSrqAppName
-    logAnalyticsWorkspaceResourceId: laws.outputs.id
-    userAssignedManagedIdentityResourceId: uami.outputs.id 
-    functionStorageAccountType: functionAppStorageType
-  }
-}
+/*
+Exercises:
 
-module bre './modules/appService/functionApp.bicep' = {
-  name: breFunctionAppDeploymentName
-  params: {
-    location: location
-    tags: tags
-    appInsightsConnectionStringSecretUri: appInsights.outputs.connectionStringSecretUri
-    appInsightsResourceId: appInsights.outputs.id
-    appServicePlanResourceId: asp.outputs.id
-    functionName: breAppName
-    logAnalyticsWorkspaceResourceId: laws.outputs.id
-    userAssignedManagedIdentityResourceId: uami.outputs.id 
-    functionStorageAccountType: functionAppStorageType
-  }
-}
+1: Modify this template to deploy the two remaining Function apps
+   ref: https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/modules
+
+2: Store Hybrid Connection secrets in Key Vault and reference them in the appropriate Function apps
+   ref: https://learn.microsoft.com/en-us/azure/templates/microsoft.keyvault/vaults/secrets?pivots=deployment-language-bicep
+   ref: keyVaultSecret module directory in this repo :D
+
+3: Add a module for Service Bus Topic Subscriptions, deploy the necessary subscriptions
+   ref: https://learn.microsoft.com/en-us/azure/templates/microsoft.servicebus/namespaces/topics/subscriptions?pivots=deployment-language-bicep
+   ref: https://learn.microsoft.com/en-us/azure/templates/microsoft.servicebus/namespaces/topics/subscriptions/rules?pivots=deployment-language-bicep
+
+4: Deploy the necessary access policies for the Subscriptions.
+   ref: https://learn.microsoft.com/en-us/azure/templates/microsoft.servicebus/namespaces/topics/authorizationrules?pivots=deployment-language-bicep
+
+5: Add a module for Function deployment slots
+   ref: https://learn.microsoft.com/en-us/azure/templates/microsoft.web/sites/slots?pivots=deployment-language-bicep
+*/
