@@ -7,11 +7,14 @@ parameters:
   type: string
 - name: resourceGroupName
   type: string
+- name: dependencyName
+  type: string
 
 
 stages:
 - stage: 'Deploy${{ parameters.environmentName }}'
   displayName: 'Deploy'
+  dependsOn: ${{ parameters.dependencyName }}
   jobs:
   - deployment: 'DeployIntegrationInfrastrucutre${{ parameters.environmentName }}'
     displayName: 'Deploy Integration Infrastrucutre'

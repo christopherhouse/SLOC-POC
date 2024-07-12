@@ -18,15 +18,8 @@ param tableNames string[] = []
 @description('The name of the Key Vault secret to store the storage account connection string')
 param storageConnectionStringSecretName string
 
-@allowed([
-  'Standard_LRS'
-  'Standard_GRS'
-  'Standard_RAGRS'
-  'Standard_ZRS'
-  'Premium_LRS'
-])
 @description('The SKU of the storage account')
-param storageAccountSku string
+param storageAccountSku udt.storageAccountType
 
 @description('The name of the Key Vault to store the storage account connection string')
 param keyVaultName string
@@ -49,12 +42,8 @@ resource storage 'Microsoft.Storage/storageAccounts@2022-09-01' = {
     accessTier: 'Hot'
     supportsHttpsTrafficOnly: true
     minimumTlsVersion: 'TLS1_2'
+    publicNetworkAccess: 'Enabled'
     allowBlobPublicAccess: false
-    networkAcls: {
-      bypass: 'AzureServices'
-      defaultAction: 'Deny'
-    }
-    publicNetworkAccess: 'Disabled'
   }
 }
 
@@ -86,7 +75,7 @@ resource fileServices 'Microsoft.Storage/storageAccounts/fileServices@2023-01-01
   parent: storage
 }
 
-resource fileShare 'Microsoft.Storage/storageAccounts/fileServices/shares@2023-01-01' = [for fileShare in fileShares : {
+resource share 'Microsoft.Storage/storageAccounts/fileServices/shares@2023-01-01' = [for fileShare in fileShares : {
   name: fileShare.shareName
   parent: fileServices
   properties: {
