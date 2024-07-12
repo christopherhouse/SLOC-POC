@@ -48,10 +48,10 @@ The Bicep templates in this repository are designed to deploy and configure the 
 
 ## 🛠 Deployment Scripts
 
-- **[`Deploy-Main.ps1`](command:_github.copilot.openRelativePath?%5B%7B%22scheme%22%3A%22file%22%2C%22authority%22%3A%22%22%2C%22path%22%3A%22%2Fc%3A%2FProjects%2Fsloc-poc%2Finfrastructure%2Fscripts%2FDeploy-Main.ps1%22%2C%22query%22%3A%22%22%2C%22fragment%22%3A%22%22%7D%5D "c:\Projects\sloc-poc\infrastructure\scripts\Deploy-Main.ps1")**: A PowerShell script that facilitates the deployment of the [`main.bicep`](command:_github.copilot.openRelativePath?%5B%7B%22scheme%22%3A%22file%22%2C%22authority%22%3A%22%22%2C%22path%22%3A%22%2FC%3A%2FProjects%2Fsloc-poc%2Finfrastructure%2Fbicep%2Fmain.bicep%22%2C%22query%22%3A%22%22%2C%22fragment%22%3A%22%22%7D%5D "c:\Projects\sloc-poc\infrastructure\bicep\main.bicep") template to Azure. It accepts parameters for environment name and resource group name.
+- **[`Deploy-Main.ps1`](infrastructure/scripts/Deploy-Main.ps1")**: A PowerShell script that facilitates the deployment of the [`main.bicep`](/infrastructure/bicep/main.bicep") template to Azure. It accepts parameters for environment name and resource group name.
 
 ## 🔄 CI/CD Pipelines
 
-- **[`deploy.yaml`](command:_github.copilot.openRelativePath?%5B%7B%22scheme%22%3A%22file%22%2C%22authority%22%3A%22%22%2C%22path%22%3A%22%2Fc%3A%2FProjects%2Fsloc-poc%2Fpipelines%2Ftemplates%2Fdeploy.yaml%22%2C%22query%22%3A%22%22%2C%22fragment%22%3A%22%22%7D%5D "c:\Projects\sloc-poc\pipelines\templates\deploy.yaml")**: A YAML pipeline template for Azure DevOps that automates the deployment of the Bicep templates. It includes stages for downloading artifacts, deploying the main Bicep template, and specifying deployment parameters based on the environment.
+- **[`deploy.yaml`](pipelines/templates/deploy.yaml")**: A YAML pipeline template for Azure DevOps that automates the deployment of the Bicep templates. It includes stages for downloading artifacts, deploying the main Bicep template, and specifying deployment parameters based on the environment.
 
 This repository is structured to support multiple environments and scalable deployments, leveraging Azure's cloud capabilities for a robust and efficient infrastructure setup.
