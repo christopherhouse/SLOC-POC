@@ -43,6 +43,7 @@ resource storage 'Microsoft.Storage/storageAccounts@2022-09-01' = {
     supportsHttpsTrafficOnly: true
     minimumTlsVersion: 'TLS1_2'
     publicNetworkAccess: 'Enabled'
+    allowBlobPublicAccess: false
   }
 }
 
@@ -74,7 +75,7 @@ resource fileServices 'Microsoft.Storage/storageAccounts/fileServices@2023-01-01
   parent: storage
 }
 
-resource fileShare 'Microsoft.Storage/storageAccounts/fileServices/shares@2023-01-01' = [for fileShare in fileShares : {
+resource share 'Microsoft.Storage/storageAccounts/fileServices/shares@2023-01-01' = [for fileShare in fileShares : {
   name: fileShare.shareName
   parent: fileServices
   properties: {

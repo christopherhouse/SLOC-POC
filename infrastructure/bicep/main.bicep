@@ -191,32 +191,32 @@ module coreSrq './modules/appService/functionApp.bicep' = {
   ]
 }
 
-// module extSrq './modules/appService/functionApp.bicep' = {
-//   name: extSrqFunctionAppDeploymentName
-//   params: {
-//     location: location
-//     tags: tags
-//     appInsightsConnectionStringSecretUri: appInsights.outputs.connectionStringSecretUri
-//     appInsightsResourceId: appInsights.outputs.id
-//     appServicePlanResourceId: asp.outputs.id
-//     functionName: extSrqAppName
-//     logAnalyticsWorkspaceResourceId: laws.outputs.id
-//     userAssignedManagedIdentityResourceId: uami.outputs.id 
-//     functionStorageAccountType: functionAppStorageType
-//   }
-// }
+module extSrq './modules/appService/functionApp.bicep' = {
+  name: extSrqFunctionAppDeploymentName
+  params: {
+    location: location
+    tags: tags
+    appInsightsConnectionStringSecretUri: appInsights.outputs.connectionStringSecretUri
+    appInsightsResourceId: appInsights.outputs.id
+    appServicePlanResourceId: asp.outputs.id
+    functionName: extSrqAppName
+    logAnalyticsWorkspaceResourceId: laws.outputs.id
+    userAssignedManagedIdentityResourceId: uami.outputs.id 
+    functionStorageAccountType: functionAppStorageType
+  }
+}
 
-// module bre './modules/appService/functionApp.bicep' = {
-//   name: breFunctionAppDeploymentName
-//   params: {
-//     location: location
-//     tags: tags
-//     appInsightsConnectionStringSecretUri: appInsights.outputs.connectionStringSecretUri
-//     appInsightsResourceId: appInsights.outputs.id
-//     appServicePlanResourceId: asp.outputs.id
-//     functionName: breAppName
-//     logAnalyticsWorkspaceResourceId: laws.outputs.id
-//     userAssignedManagedIdentityResourceId: uami.outputs.id 
-//     functionStorageAccountType: functionAppStorageType
-//   }
-// }
+module bre './modules/appService/functionApp.bicep' = {
+  name: breFunctionAppDeploymentName
+  params: {
+    location: location
+    tags: tags
+    appInsightsConnectionStringSecretUri: appInsights.outputs.connectionStringSecretUri
+    appInsightsResourceId: appInsights.outputs.id
+    appServicePlanResourceId: asp.outputs.id
+    functionName: breAppName
+    logAnalyticsWorkspaceResourceId: laws.outputs.id
+    userAssignedManagedIdentityResourceId: uami.outputs.id 
+    functionStorageAccountType: functionAppStorageType
+  }
+}
