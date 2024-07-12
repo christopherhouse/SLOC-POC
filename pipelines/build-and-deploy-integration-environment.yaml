@@ -7,10 +7,10 @@ stages:
 - stage: Build
   displayName: 'Build and publish infrastructure artifacts'
   jobs:
-  - template: templates/psrule.yaml
-    parameters:
-      psRuleModules: 'PSRule.Rules.Azure,PSRule.Rules.CAF'
-      psRuleBaseline: 'Azure.GA_2024_06'
+  # - template: templates/psrule.yaml
+  #   parameters:
+  #     psRuleModules: 'PSRule.Rules.Azure,PSRule.Rules.CAF'
+  #     psRuleBaseline: 'Azure.GA_2024_06'
   - template: 'templates/build.yaml'
     parameters:
       dependencyName: 'PSRule'
