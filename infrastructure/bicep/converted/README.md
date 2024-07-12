@@ -1,2 +1,2 @@
 # Converted ARM Template
-**[`template.bicep`](/infrastrucutre/bicep/converted/template.bicep)** is the converted Bicep template from the original ARM template that was exported from an existing Resource Group.
+**[`template.bicep`](template.bicep)** is the converted Bicep template from the original ARM template that was exported from an existing Resource Group.
