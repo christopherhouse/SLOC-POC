@@ -48,10 +48,10 @@ The Bicep templates in this repository are designed to deploy and configure the 
 
 ## 🛠 Deployment Scripts
 
-- **[`Deploy-Main.ps1`](infrastructure/scripts/Deploy-Main.ps1")**: A PowerShell script that facilitates the deployment of the [`main.bicep`](/infrastructure/bicep/main.bicep") template to Azure. It accepts parameters for environment name and resource group name.
+- **[`Deploy-Main.ps1`](infrastructure/scripts/Deploy-Main.ps1)**: A PowerShell script that facilitates the deployment of the [`main.bicep`](/infrastructure/bicep/main.bicep") template to Azure. It accepts parameters for environment name and resource group name.
 
 ## 🔄 CI/CD Pipelines
 
-- **[`deploy.yaml`](pipelines/templates/deploy.yaml")**: A YAML pipeline template for Azure DevOps that automates the deployment of the Bicep templates. It includes stages for downloading artifacts, deploying the main Bicep template, and specifying deployment parameters based on the environment.
+- **[`deploy.yaml`](pipelines/templates/deploy.yaml)**: A YAML pipeline template for Azure DevOps that automates the deployment of the Bicep templates. It includes stages for downloading artifacts, deploying the main Bicep template, and specifying deployment parameters based on the environment.
 
 This repository is structured to support multiple environments and scalable deployments, leveraging Azure's cloud capabilities for a robust and efficient infrastructure setup.
