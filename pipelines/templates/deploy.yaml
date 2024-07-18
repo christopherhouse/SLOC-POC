@@ -9,7 +9,8 @@ parameters:
   type: string
 - name: dependencyName
   type: string
-
+- name: parameters.functionAppName
+  type: string
 
 stages:
 - stage: 'Deploy${{ parameters.environmentName }}'
@@ -48,3 +49,17 @@ stages:
               deploymentName: $(Build.BuildId)
               deploymentMode: 'Incremental'
               location: '$(region)'
+
+          - task: DownloadPipelineArtifact@2
+            displayName: 'Download Function App Artifact'
+            inputs:
+              artifact: 'function-app-artifact'
+
+          - task: AzureFunctionApp@1
+            displayName: 'Deploy Azure Function'
+            inputs:
+              azureSubscription: '${{ parameters.serviceConnectionName }}'
+              appType: 'functionApp'
+              appName: '${{ parameters.functionAppName }}'
+              package: '$(Pipeline.Workspace)/function-app-artifact/*.zip'
+              deploymentMethod: 'auto'
