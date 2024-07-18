@@ -81,6 +81,8 @@ resource func 'Microsoft.Web/sites@2023-12-01' = {
       functionAppScaleLimit: 0
       minimumElasticInstanceCount: 1
       keyVaultReferenceIdentity: userAssignedManagedIdentityResourceId
+      netFrameworkVersion: 'v8.0'
+      use32BitWorkerProcess: false
       appSettings: [
         {
           name: 'AzureWebJobsStorage'
