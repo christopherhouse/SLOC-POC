@@ -9,7 +9,7 @@ parameters:
   type: string
 - name: dependencyName
   type: string
-- name: parameters.functionAppName
+- name: functionAppName
   type: string
 
 stages:
