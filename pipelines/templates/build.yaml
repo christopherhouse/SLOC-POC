@@ -28,4 +28,31 @@ jobs:
       artifact: 'bicep-artifacts'
       publishLocation: 'pipeline'
   
-  
+  - task: DotNetCoreCLI@2
+    displayName: 'Restore NuGet packages for Function App'
+    inputs:
+      command: 'restore'
+      projects: 'Functions/SbUamiPoc/*.csproj'
+
+  - task: DotNetCoreCLI@2
+    displayName: 'Build Function App'
+    inputs:
+      command: 'build'
+      projects: 'Functions/SbUamiPoc/*.csproj'
+      arguments: '--configuration Release'
+
+  - task: DotNetCoreCLI@2
+    displayName: 'Publish Function App'
+    inputs:
+      command: 'publish'
+      publishWebProjects: false
+      projects: 'Functions/SbUamiPoc/*.csproj'
+      arguments: '--configuration Release --output $(Build.ArtifactStagingDirectory)/functionapp'
+      zipAfterPublish: true
+
+  - task: PublishPipelineArtifact@1
+    displayName: 'Publish Function App as pipeline artifact'
+    inputs:
+      targetPath: '$(Build.ArtifactStagingDirectory)/functionapp'
+      artifact: 'function-app-artifact'
+      publishLocation: 'pipeline'
