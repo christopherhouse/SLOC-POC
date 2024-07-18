@@ -32,13 +32,13 @@ jobs:
     displayName: 'Restore NuGet packages for Function App'
     inputs:
       command: 'restore'
-      projects: 'Functions/SbUamiPoc/*.csproj'
+      projects: 'functions/SbUamiPoc/*.csproj'
 
   - task: DotNetCoreCLI@2
     displayName: 'Build Function App'
     inputs:
       command: 'build'
-      projects: 'Functions/SbUamiPoc/*.csproj'
+      projects: 'functions/SbUamiPoc/*.csproj'
       arguments: '--configuration Release'
 
   - task: DotNetCoreCLI@2
@@ -46,7 +46,7 @@ jobs:
     inputs:
       command: 'publish'
       publishWebProjects: false
-      projects: 'Functions/SbUamiPoc/*.csproj'
+      projects: 'functions/SbUamiPoc/*.csproj'
       arguments: '--configuration Release --output $(Build.ArtifactStagingDirectory)/functionapp'
       zipAfterPublish: true
 
