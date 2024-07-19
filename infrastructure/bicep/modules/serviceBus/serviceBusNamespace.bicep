@@ -54,4 +54,5 @@ resource laws 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = {
 
 output name string = sbns.name
 output id string = sbns.id
-output endpoint string = sbns.properties.serviceBusEndpoint
+
+output endpoint string = split(replace(sbns.properties.serviceBusEndpoint, '/', ''), ':')[1] // Return only hostname from https://<hostname>:<port>
