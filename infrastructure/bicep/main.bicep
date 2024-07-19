@@ -185,6 +185,7 @@ module coreSrq './modules/appService/functionApp.bicep' = {
     relayNamespaceName: rns.outputs.name
     relayNamespaceResourceId: rns.outputs.id
     hybridConnectionName: hc.outputs.name
+    relayNamespaceEndpoint: rns.outputs.endpoint
   }
   dependsOn: [
     kvRbac  // Manual dependency because the Function needs Secrets User access to KV before it can deploy due to the App Insights secret being stored in KV
