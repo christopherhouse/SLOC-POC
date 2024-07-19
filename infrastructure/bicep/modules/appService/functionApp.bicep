@@ -157,7 +157,7 @@ resource hcFunc 'Microsoft.Web/sites/hybridConnectionNamespaces/relays@2023-12-0
     port: hybridConnectionDestinationPortNumber
     hostname: hybridConnectionDestinationHostName
     sendKeyName: 'defaultSender'
-    sendKeyValue: sender.listKeys().primaryConnectionString
+    sendKeyValue: sender.listKeys().primaryKey
   }
 }
 
