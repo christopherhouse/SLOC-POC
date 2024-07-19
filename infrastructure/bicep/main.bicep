@@ -182,6 +182,8 @@ module coreSrq './modules/appService/functionApp.bicep' = {
     logAnalyticsWorkspaceResourceId: laws.outputs.id
     userAssignedManagedIdentityResourceId: uami.outputs.id
     functionStorageAccountType: functionAppStorageType
+    relayNamespaceName: rns.outputs.name
+    hybridConnectionName: hc.outputs.name
   }
   dependsOn: [
     kvRbac  // Manual dependency because the Function needs Secrets User access to KV before it can deploy due to the App Insights secret being stored in KV

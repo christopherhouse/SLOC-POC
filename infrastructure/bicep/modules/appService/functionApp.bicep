@@ -131,7 +131,9 @@ resource func 'Microsoft.Web/sites@2023-12-01' = {
 
 resource hc 'Microsoft.Web/sites/hybridConnectionNamespaces/relays@2023-12-01' = {
   name: '${func.name}/${relayNamespaceName}/${hybridConnectionName}'
-  properties: {}
+  properties: {
+    relayName: relayNamespaceName
+  }
 }
 
 resource diags 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = {

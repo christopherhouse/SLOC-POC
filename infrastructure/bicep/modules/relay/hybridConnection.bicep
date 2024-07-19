@@ -36,3 +36,6 @@ resource sendRule 'Microsoft.Relay/namespaces/hybridConnections/authorizationRul
     ]
   }
 }
+
+output id string = hc.id
+output name string = hc.name
