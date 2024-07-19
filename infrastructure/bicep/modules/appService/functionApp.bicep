@@ -142,6 +142,11 @@ resource relayNs 'Microsoft.Relay/namespaces@2021-11-01' existing = {
   scope: resourceGroup()
 }
 
+resource sender 'Microsoft.Relay/namespaces/hybridConnections/authorizationRules@2021-11-01' existing = {
+  name: '${relayNamespaceName}/${hybridConnectionName}/defaultSender'
+  scope: resourceGroup()
+}
+
 resource hcFunc 'Microsoft.Web/sites/hybridConnectionNamespaces/relays@2023-12-01' = {
   name: '${func.name}/${hybridConnectionName}' // Hybrid connection name is prefixed w/ the relay name, so this will be a valid 3 segment name
   properties: {
@@ -151,6 +156,8 @@ resource hcFunc 'Microsoft.Web/sites/hybridConnectionNamespaces/relays@2023-12-0
     serviceBusSuffix: '.servicebus.windows.net'
     port: hybridConnectionDestinationPortNumber
     hostname: hybridConnectionDestinationHostName
+    sendKeyName: 'defaultSender'
+    sendKeyValue: sender.listKeys().primaryConnectionString
   }
 }
 
