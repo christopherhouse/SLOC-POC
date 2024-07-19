@@ -28,6 +28,10 @@ param appInsightsConnectionStringSecretUri string
 @description('The storage account type for the Function App')
 param functionStorageAccountType udt.storageAccountType
 
+param relayNamespaceName string
+
+param hybridConnectionName string
+
 var appInsightsTag = {
   'hidden-related:/${appInsightsResourceId}': 'empty'
 }
@@ -123,6 +127,11 @@ resource func 'Microsoft.Web/sites@2023-12-01' = {
       ]
     }
   }
+}
+
+resource hc 'Microsoft.Web/sites/hybridConnectionNamespaces/relays@2023-12-01' = {
+  name: '${func.name}/${relayNamespaceName}/${hybridConnectionName}'
+  properties: {}
 }
 
 resource diags 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = {
