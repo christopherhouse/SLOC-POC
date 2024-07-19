@@ -129,12 +129,24 @@ resource func 'Microsoft.Web/sites@2023-12-01' = {
   }
 }
 
-resource hc 'Microsoft.Web/sites/hybridConnectionNamespaces/relays@2023-12-01' = {
+resource relayNs 'Microsoft.Relay/namespaces@2021-11-01' existing = {
+  name: relayNamespaceName
+  scope: resourceGroup()
+}
+
+resource hc 'Microsoft.Relay/namespaces/hybridConnections@2021-11-01' existing = {
+  name: hybridConnectionName
+  parent: relayNs
+}
+
+resource hcFunc 'Microsoft.Web/sites/hybridConnectionNamespaces/relays@2023-12-01' = {
   name: '${func.name}/${relayNamespaceName}/${hybridConnectionName}'
   properties: {
     relayName: hybridConnectionName
     serviceBusNamespace: relayNamespaceName
-
+    relayArmUri: relayNs.id
+    hostname: relayNs.properties.serviceBusEndpoint
+    serviceBusSuffix: '.servicebus.windows.net'
   }
 }
 

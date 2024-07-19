@@ -34,3 +34,4 @@ resource diag 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = {
 }
 
 output name string = rel.name
+output endpoint string = rel.properties.serviceBusEndpoint
