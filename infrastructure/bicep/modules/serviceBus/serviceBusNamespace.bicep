@@ -54,3 +54,4 @@ resource laws 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = {
 
 output name string = sbns.name
 output id string = sbns.id
+output endpoint string = sbns.properties.serviceBusEndpoint
