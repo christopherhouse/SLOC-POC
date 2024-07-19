@@ -140,7 +140,7 @@ resource hc 'Microsoft.Relay/namespaces/hybridConnections@2021-11-01' existing =
 }
 
 resource hcFunc 'Microsoft.Web/sites/hybridConnectionNamespaces/relays@2023-12-01' = {
-  name: '${func.name}/${relayNamespaceName}/${hybridConnectionName}'
+  name: '${func.name}/${hybridConnectionName}' // Hybrid connection name is prefixed w/ the relay name, so this will be a valid 3 segment name
   properties: {
     relayName: hybridConnectionName
     serviceBusNamespace: relayNamespaceName
