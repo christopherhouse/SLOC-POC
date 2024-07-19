@@ -183,6 +183,7 @@ module coreSrq './modules/appService/functionApp.bicep' = {
     userAssignedManagedIdentityResourceId: uami.outputs.id
     functionStorageAccountType: functionAppStorageType
     relayNamespaceName: rns.outputs.name
+    relayNamespaceResourceId: rns.outputs.id
     hybridConnectionName: hc.outputs.name
   }
   dependsOn: [

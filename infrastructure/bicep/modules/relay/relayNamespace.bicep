@@ -33,5 +33,6 @@ resource diag 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = {
   }
 }
 
+output id string = rel.id
 output name string = rel.name
 output endpoint string = split(replace(rel.properties.serviceBusEndpoint, '/', ''), ':')[1] // Return only hostname from https://<hostname>:<port>

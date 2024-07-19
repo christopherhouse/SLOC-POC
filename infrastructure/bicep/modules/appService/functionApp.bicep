@@ -28,6 +28,10 @@ param appInsightsConnectionStringSecretUri string
 @description('The storage account type for the Function App')
 param functionStorageAccountType udt.storageAccountType
 
+param relayNamespaceResourceId string 
+
+param relayNamespaceEndpoint string
+
 param relayNamespaceName string
 
 param hybridConnectionName string
@@ -134,18 +138,13 @@ resource relayNs 'Microsoft.Relay/namespaces@2021-11-01' existing = {
   scope: resourceGroup()
 }
 
-resource hc 'Microsoft.Relay/namespaces/hybridConnections@2021-11-01' existing = {
-  name: hybridConnectionName
-  parent: relayNs
-}
-
 resource hcFunc 'Microsoft.Web/sites/hybridConnectionNamespaces/relays@2023-12-01' = {
   name: '${func.name}/${hybridConnectionName}' // Hybrid connection name is prefixed w/ the relay name, so this will be a valid 3 segment name
   properties: {
     relayName: hybridConnectionName
     serviceBusNamespace: relayNamespaceName
     relayArmUri: relayNs.id
-    hostname: relayNs.properties.serviceBusEndpoint
+    hostname: relayNamespaceEndpoint
     serviceBusSuffix: '.servicebus.windows.net'
   }
 }
