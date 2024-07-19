@@ -25,7 +25,10 @@ param serviceBusSku udt.serviceBusSkuType
 param hybridConnectionName string
 
 @description('The endpoint (hostname:port #) of the hybrid connection destination.')
-param hybridConnectionDestinationEndpoint string
+param hybridConnectionDestinationHostName string
+
+@description('The port number of the hybrid connection destination.')
+param hybridConnectionDestinationPortNumber int
 
 @description('The number of instances to create for the App Service Plan for Function apps')
 param functionAppServicePlanInstanceCount int
@@ -137,7 +140,7 @@ module rns './modules/relay/relayNamespace.bicep' = {
 module hc './modules/relay/hybridConnection.bicep' = {
   name: hyConnectionDeploymentName
   params: {
-    hybridConnectionDestinationEndpoint: hybridConnectionDestinationEndpoint
+    hybridConnectionDestinationEndpoint: '${hybridConnectionDestinationHostName}:${hybridConnectionDestinationPortNumber}'
     hybridConnectionName: hyConnectionName
     relayNamespaceName: rns.outputs.name
   }
@@ -186,6 +189,8 @@ module coreSrq './modules/appService/functionApp.bicep' = {
     relayNamespaceResourceId: rns.outputs.id
     hybridConnectionName: hc.outputs.name
     relayNamespaceEndpoint: rns.outputs.endpoint
+    hybridConnectionDestinationHostName: hybridConnectionDestinationHostName
+    hybridConnectionDestinationPortNumber: hybridConnectionDestinationPortNumber
   }
   dependsOn: [
     kvRbac  // Manual dependency because the Function needs Secrets User access to KV before it can deploy due to the App Insights secret being stored in KV

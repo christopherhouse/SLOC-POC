@@ -36,6 +36,10 @@ param relayNamespaceName string
 
 param hybridConnectionName string
 
+param hybridConnectionDestinationHostName string
+
+param hybridConnectionDestinationPortNumber int
+
 var appInsightsTag = {
   'hidden-related:/${appInsightsResourceId}': 'empty'
 }
@@ -144,8 +148,9 @@ resource hcFunc 'Microsoft.Web/sites/hybridConnectionNamespaces/relays@2023-12-0
     relayName: hybridConnectionName
     serviceBusNamespace: relayNamespaceName
     relayArmUri: relayNs.id
-    hostname: relayNamespaceEndpoint
     serviceBusSuffix: '.servicebus.windows.net'
+    port: hybridConnectionDestinationPortNumber
+    hostname: hybridConnectionDestinationHostName
   }
 }
 
