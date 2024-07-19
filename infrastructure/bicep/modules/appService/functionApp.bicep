@@ -156,7 +156,7 @@ resource hcFunc 'Microsoft.Web/sites/hybridConnectionNamespaces/relays@2023-12-0
     serviceBusSuffix: '.servicebus.windows.net'
     port: hybridConnectionDestinationPortNumber
     hostname: hybridConnectionDestinationHostName
-    sendKeyName: 'defaultSender'
+    //sendKeyName: 'defaultSender'
   }
 }
 
