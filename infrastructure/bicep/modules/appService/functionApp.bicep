@@ -143,7 +143,7 @@ resource relayNs 'Microsoft.Relay/namespaces@2021-11-01' existing = {
 }
 
 resource sender 'Microsoft.Relay/namespaces/hybridConnections/authorizationRules@2021-11-01' existing = {
-  name: '${relayNamespaceName}/${hybridConnectionName}/defaultSender'
+  name: '${hybridConnectionName}/defaultSender'
   scope: resourceGroup()
 }
 
